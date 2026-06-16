@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Zelatot | Distance Means So Little</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #b39ddb 0%, #7e57c2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 15px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            transition: all 0.5s ease-in-out;
+            position: relative;
+        }
+
+        /* Page Layouts */
+        .page {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        #page1 {
+            display: flex;
+        }
+
+        h1 {
+            color: #673ab7;
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+
+        .sad-text {
+            color: #4a148c;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .distance-text {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .letter-box {
+            background: #fff;
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 5px solid #673ab7;
+            text-align: left;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #444;
+            font-size: 0.95rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .question {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.4;
+        }
+
+        .suitor-badge {
+            background: linear-gradient(135deg, #d1c4e9 0%, #b39ddb 100%);
+            color: #4a148c;
+            padding: 15px 20px;
+            border-radius: 15px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            border: 2px dashed #673ab7;
+            margin: 10px 0;
+            box-shadow: 0 4px 10px rgba(103, 58, 183, 0.1);
+        }
+
+        /* Navigation Groups */
+        .nav-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .next-btn {
+            background-color: #673ab7;
+            color: white;
+            box-shadow: 0 5px 15px rgba(103, 58, 183, 0.3);
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .next-btn:hover {
+            background-color: #5e35b1;
+        }
+
+        .back-btn {
+            background-color: transparent;
+            color: #673ab7;
+            border: 2px solid #673ab7;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(103, 58, 183, 0.1);
+        }
+
+        #yesBtn {
+            background-color: #673ab7;
+            color: white;
+            box-shadow: 0 5px 15px rgba(103, 58, 183, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+
+        #noBtn {
+            background-color: #ccc;
+            color: #333;
+            position: relative;
+            z-index: 10;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            color: #673ab7;
+            font-size: 1.3rem;
+            font-weight: bold;
+            animation: popIn 0.5s ease-in-out;
+            line-height: 1.5;
+        }
+
+        .success-message .next-btn {
+            margin: 20px auto 0 auto;
+            display: block;
+        }
+
+        /* Celebration Confetti Effect */
+        .confetti-container {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ffeb3b;
+            animation: confettiFall 2.5s linear infinite;
+        }
+
+        /* Animations & Icons */
+        .icon {
+            font-size: 3.5rem;
+        }
+
+        .big-heart {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="confetti-container" id="confettiVisual"></div>
+        
+        <div id="page1" class="page">
+            <div class="icon pulse"></div>
+            <h1>Hello, my zelatot &lt;33</h1>
+            <div class="nav-group">
+                <button class="btn next-btn" onclick="showPage(2)">Next</button>
+            </div>
+        </div>
+
+        <div id="page2" class="page">
+            <div class="icon">:((</div>
+            <div class="sad-text">I missed you, zelatot :((</div>
+            <div class="nav-group">
+                <button class="btn back-btn" onclick="showPage(1)">Back</button>
+                <button class="btn next-btn" onclick="showPage(3)">Next</button>
+            </div>
+        </div>
+
+        <div id="page3" class="page">
+            <div class="icon">:(</div>
+            <h1>I'm Sorry...</h1>
+            <div class="letter-box">
+                <p>I want to say i'm deeply sorry for what happened last time. I’m sorry i got too emotional and made things complicated. I know what I did was off, and if it made you feel off, it’s okay, i really understand. Being far away from you make things hard, but you mean so much to me, so i promise to do better for you.</p>
+            </div>
+            <div class="nav-group">
+                <button class="btn back-btn" onclick="showPage(2)">Back</button>
+                <button class="btn next-btn" onclick="showPage(4)">Next</button>
+            </div>
+        </div>
+
+        <div id="page4" class="page">
+            <h1>For zelatot &lt;33 </h1>
+            <p class="distance-text"></p>
+
+            <div class="letter-box">
+                <p>Even though there are hundred miles between us rn, i can’t stop thinking about you. It’s always you, Leigh. Everything i do, you’re always the reason of it, iniisip ko kung matutuwa and magiging proud ka ba, if you notice i always tell you about my accomplishments, it feels different when you are the one who's proud of me. By that i can tell you are the one who completes me, i dont get that feeling from others, just you. It feels like you are the missing piece of me. You’re the reason i push myself to become the best version of myself, and someone i never thought i could be, and nothing can stop me from expressing what i truly feel for you. Talking to you or being with you in a call is always the best part of my day. I want to make things official. I want to court you properly, treat you right, and show you how much you mean to me, no matter the distance is.</p>
+            </div>
+
+            <div class="nav-group">
+                <button class="btn back-btn" onclick="showPage(3)">Back</button>
+                <button class="btn next-btn" onclick="showPage(5)">Next</button>
+            </div>
+        </div>
+
+        <div id="page5" class="page">
+            <div class="big-heart pulse"></div>
+            <p class="question" id="mainQuestion">May i respectfully court you, Ms. Leigh Yzela Alcoba? 🌹</p>
+
+            <div class="btn-group" id="mainButtons">
+                <button class="btn" id="yesBtn" onclick="celebrate()">Yes!</button>
+                <button class="btn" id="noBtn" onclick="sayBawal()">No</button>
+            </div>
+
+            <div class="success-message" id="success">
+                <p>Thank you, Miss Leigh. I truly appreciate your answer, nomnom assures to court you properly with respect, patience, and sincerity. ^__^&lt;&lt;8</p>
+                <button class="btn next-btn" onclick="advanceToPage6()">Next</button>
+            </div>
+        </div>
+
+        <div id="page6" class="page">
+            <div class="icon pulse"></div>
+            <h1>IT'S OFFICIAL! ✨</h1>
+            <div class="suitor-badge">
+                Simon De Leon is now your Official Suitor <3  
+            </div>
+            <p class="distance-text" style="color: #4a148c; font-weight: 500; font-size: 1.1rem; margin-top: 10px;">
+                You have bewitched me, body and soul, and I love... I love... I love you. I never wish to be parted from you from this day on.
+            </p>
+            
+            <div class="nav-group">
+                <button class="btn back-btn" onclick="resetFromPage6()">Back</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showPage(pageNumber) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.style.display = 'none');
+            
+            const targetPage = document.getElementById('page' + pageNumber);
+            if (pageNumber >= 3) {
+                targetPage.style.display = 'block'; 
+            } else {
+                targetPage.style.display = 'flex';
+            }
+            
+            if (pageNumber !== 5) {
+                document.getElementById('confettiVisual').style.display = 'none';
+                document.getElementById('confettiVisual').innerHTML = '';
+            }
+        }
+
+        function sayBawal() {
+            alert("Bawal mag no, bleeeh!");
+        }
+
+        function celebrate() {
+            document.getElementById('mainButtons').style.display = 'none';
+            document.getElementById('mainQuestion').style.display = 'none';
+            document.querySelector('#page5 .big-heart').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            
+            const confettiContainer = document.getElementById('confettiVisual');
+            confettiContainer.style.display = 'block';
+            confettiContainer.innerHTML = '';
+            
+            const colors = ['#e91e63', '#9c27b0', '#ffeb3b', '#2196f3', '#4caf50', '#ff9800'];
+            
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('confetti');
+                
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 1.5 + 's';
+                particle.style.transform = `scale(${Math.random() * 0.8 + 0.4})`;
+                
+                confettiContainer.appendChild(particle);
+            }
+        }
+
+        function advanceToPage6() {
+            showPage(6);
+        }
+
+        // Fixed: Forces Page 5 back to flex mode so layout updates correctly
+        function resetFromPage6() {
+            document.getElementById('mainButtons').style.display = 'flex';
+            document.getElementById('mainQuestion').style.display = 'block';
+            document.querySelector('#page5 .big-heart').style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+            
+            // Hide page 6, display page 5 in flex mode
+            document.getElementById('page6').style.display = 'none';
+            document.getElementById('page5').style.display = 'flex';
+        }
+    </script>
+
+</body>
+</html>
